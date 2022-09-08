@@ -1,0 +1,117 @@
+<!-- ABOUT THE PROJECT -->
+## About The Project
+Application simulates the MontyHall Paradox -> https://en.wikipedia.org/wiki/Monty_Hall_problem
+
+<!-- GETTING STARTED -->
+1) Install IDE of your choice.
+2) Maven for project structure handling.
+3) Spring boot to create and handle dependencies for the application,
+3.1) Dependencies Spring Web and Thymeleaf.
+
+### Budling the application
+
+1) Creating a Door class and declaring a Array to represent the doors in the challenge
+
+public class Doors {
+    final private int [] doors = {0,1,2};
+    
+
+2) Creating a method that’s picks the door where the "prize" is placed, using the Random class.
+
+Random pick = new Random();
+public int getWinningDoor() {
+        return pick.nextInt(0, 3);
+    }
+3) Creating a Player class and creating a method for the player to pick a door (using a similar method as before)
+
+public class Player {
+    Random pick = new Random();
+
+public int playerChosingDoor (){
+        return pick.nextInt(0,3);
+    }
+    
+4) Create a method that loops through the door array and picking a door that has not been taken and is not the prize.
+
+public int openFirstDoor(int winningDoor,int choice ) {
+        int firstDoor=1;
+        for (int i = 0; i < doors.length; i++)
+            if (doors[i] != winningDoor && (doors[i]!=choice)){
+                setFirstDoor(doors[i]);
+                break;}
+
+        return firstDoor;
+    }
+    
+5) Create a method in the Player class that loops through the door array and picking a door that is not the players first pick and not the opened door.
+
+ public int playerSwitchingChoice (int[] doors,int choice,int firstDoor) {
+        int switchChoice=0;
+        for (int i = 0; i < doors.length; i++)
+            if (doors[i]!=firstDoor && (doors[i]!=choice))
+                switchChoice=doors[i];
+
+        return switchChoice;
+    }
+
+6) Create a Controller class to use the spring mvc and create a model that loads on the start page (defult).
+
+@Controller
+public class GameController {
+
+@GetMapping()
+String Start(Model model){
+
+7) Declare variables in the method. 
+
+    Doors door = new Doors();
+    Player player = new Player();
+
+    int [] doors = door.getDoors();
+
+    int winCountStaying=0;
+    int winCountSwitching=0;
+    int loopCounter=0;
+    
+8) Checking if the value of the prize door is the same in the scenarios of switching and staying
+
+        if (choice==winningDoor){
+            winCountStaying++;}
+
+        
+        if (switchChoice==winningDoor){
+            winCountSwitching++;}
+            
+9) Adding a do-while loop to test the scenarios 100 times.
+
+  do {
+        
+      
+
+        loopCounter++;
+    }
+    while (loopCounter<100);
+    
+ 10) Adding the results of the variables winCountStaying and winCountSwitching as an attribute and sending/Adding to the HTML file using Thymeleaf.
+ 
+    model.addAttribute("Staying",winCountStaying);
+    model.addAttribute("Switching",winCountSwitching);
+
+    return "View";
+    
+    <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 th:text="'Do I have a better chance to win if I change my door?'"></h1>
+<p th:text="'You won ' + ${Staying} + '% when staying!'"></p>
+<p th:text="'You won ' + ${Switching} + '% when switching!'"></p>
+</body>
+</html>
+    
+  11) Done! You can now run the application on your browser.
+
+    
