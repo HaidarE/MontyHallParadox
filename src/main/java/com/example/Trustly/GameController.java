@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class GameController {
-Player player = new Player();
 @GetMapping()
 String Start(Model model){
 
