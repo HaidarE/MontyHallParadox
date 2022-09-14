@@ -37,7 +37,7 @@ public int openFirstDoor(int winningDoor,int choice ) {
         int firstDoor=1;
         for (int i = 0; i < doors.length; i++)
             if (doors[i] != winningDoor && (doors[i]!=choice)){
-                setFirstDoor(doors[i]);
+                firstDoor = doors[i];
                 break;}
 
         return firstDoor;
